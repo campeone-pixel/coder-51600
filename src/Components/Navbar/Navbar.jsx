@@ -9,7 +9,9 @@ export const Navbar = () => {
 
 			<ul className={styles.containerList}>
 				<li>inicio</li>
-				<li>productos</li>
+				<li>Ropa</li>
+				<li>Zapatillas</li>
+				<li>Electrodomesticos</li>
 				<li>contacto</li>
 			</ul>
 
