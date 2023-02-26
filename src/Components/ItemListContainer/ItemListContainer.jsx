@@ -1,9 +1,8 @@
 
-
-const ItemListContainer = ( prop ) => {
+const ItemListContainer = ( {gretting} ) => {
   return (
     <div>
-      <h2>{prop.title}</h2>
+      <h2 style={{color:'white'}}> BIENVENIDO  {gretting}</h2>
     </div>
   )
 }
