@@ -7,8 +7,9 @@ import Grid from "@mui/material/Grid";
 
 import { Navbar } from "./Components/Navbar/Navbar";
 import {Footer} from './Components/Footer/Footer'
-import { ProductList } from "./Components/ProductList/ProductList";
+
 import ItemListContainer from "./Components/ItemListContainer/ItemListContainer";
+
 
 
 
@@ -30,8 +31,8 @@ function App() {
 
 
 				<Grid  item xs={12}>
-					<ItemListContainer gretting="Matias" />
-					<ProductList/>
+					<ItemListContainer/>
+					
 					
 				</Grid>
 
