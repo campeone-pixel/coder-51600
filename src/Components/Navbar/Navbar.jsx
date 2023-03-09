@@ -14,10 +14,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+
 import { Link } from "react-router-dom";
 
-const pages = ["about", "store"];
+
+const pages = ["about", "store",'deportivas', ];
 const settings = ["Perfil", "Cuenta", "Logout"];
 
 export function Navbar() {
@@ -69,6 +70,11 @@ export function Navbar() {
 						<Link to="/">IMPRESIONES 3D</Link>
 					</Typography>
 
+
+{/* ---------------------------------------------------------------------------- */}
+{/* -------------------------------------------------------------------------- */}
+
+
 					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
 						<IconButton
 							size="large"
@@ -108,6 +114,9 @@ export function Navbar() {
 						</Menu>
 					</Box>
 
+					{/* ---------------------------------------------------------------------------- */}
+{/* -------------------------------------------------------------------------- */}
+
 					<Typography
 						variant="h5"
 						noWrap
@@ -145,9 +154,11 @@ export function Navbar() {
 							>
 								<Link to={`/${page}`}>{page}</Link>
 							</Button>
+							
 						))}
+						
 					</Box>
-
+					
 					<CardWidget />
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
@@ -180,6 +191,7 @@ export function Navbar() {
 						</Menu>
 					</Box>
 				</Toolbar>
+				
 			</Container>
 		</AppBar>
 	);

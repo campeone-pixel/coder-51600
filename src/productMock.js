@@ -8,6 +8,7 @@ export const products = [
 		category: "deportivas",
 		img: "https://res.cloudinary.com/djowr4szv/image/upload/v1677269935/cld-sample-5.jpg",
 		stock: 5,
+		categoria:'urbanas'
 	},
 	{
 		id: 2,
@@ -18,6 +19,7 @@ export const products = [
 		category: "deportivas",
 		img: "https://res.cloudinary.com/djowr4szv/image/upload/v1677269935/cld-sample-5.jpg",
 		stock: 7,
+		categoria:'urbanas'
 	},
 
 	{
@@ -29,6 +31,7 @@ export const products = [
 		category: "deportivas",
 		img: "https://res.cloudinary.com/djowr4szv/image/upload/v1677269935/cld-sample-5.jpg",
 		stock: 250,
+		categoria:'deportivas'
 	},
 
 	{
@@ -40,5 +43,6 @@ export const products = [
 		category: "deportivas",
 		img: "https://res.cloudinary.com/djowr4szv/image/upload/v1677269935/cld-sample-5.jpg",
 		stock: 2,
+		categoria:'deportivas'
 	},
 ];
