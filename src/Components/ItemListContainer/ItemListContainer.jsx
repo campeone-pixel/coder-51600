@@ -19,13 +19,11 @@ const ItemListContainer = (  ) => {
 			.catch((e) => {});
 	}, []);
 
-	const onAdd = (cantidad) => {
-		console.log(`se agrego al carrito ${cantidad} elementos`);
-	};
+
 
   return (
     <div >
-      <ItemList   items={items} onAdd={onAdd} />
+      <ItemList   items={items} />
     </div>
   )
 }

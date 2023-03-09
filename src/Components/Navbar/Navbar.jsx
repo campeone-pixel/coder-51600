@@ -15,8 +15,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link } from "react-router-dom";
 
-const pages = ["inicio", "ropa", "zapatillas", "electrodomesticos", "contacto"];
+const pages = ["about", "store"];
 const settings = ["Perfil", "Cuenta", "Logout"];
 
 export function Navbar() {
@@ -45,7 +46,7 @@ export function Navbar() {
 					<Typography
 						variant="h6"
 						noWrap
-						component="a"
+						component="span"
 						href="/"
 						sx={{
 							mr: 2,
@@ -55,15 +56,17 @@ export function Navbar() {
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
-              alignItems:'center'
+							alignItems: "center",
 						}}
 					>
-						<img
-							src="https://res.cloudinary.com/djowr4szv/image/upload/v1677386645/logo-no-background_vlt5rd.png"
-							className={styles.logo}
-							alt=""
-						/>
-						IMPRESIONES 3D
+						<Link to="/">
+							<img
+								src="https://res.cloudinary.com/djowr4szv/image/upload/v1677386645/logo-no-background_vlt5rd.png"
+								className={styles.logo}
+								alt=""
+							/>
+						</Link>
+						<Link to="/">IMPRESIONES 3D</Link>
 					</Typography>
 
 					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -97,7 +100,9 @@ export function Navbar() {
 						>
 							{pages.map((page) => (
 								<MenuItem key={page} onClick={handleCloseNavMenu}>
-									<Typography textAlign="center">{page}</Typography>
+									<Typography textAlign="center">
+										<Link to={`/${page}`}>{page}</Link>
+									</Typography>
 								</MenuItem>
 							))}
 						</Menu>
@@ -106,7 +111,7 @@ export function Navbar() {
 					<Typography
 						variant="h5"
 						noWrap
-						component="a"
+						component="span"
 						href=""
 						sx={{
 							mr: 2,
@@ -117,26 +122,28 @@ export function Navbar() {
 							letterSpacing: ".3rem",
 							color: "inherit",
 							textDecoration: "none",
-              alignItems:'center'
+							alignItems: "center",
 						}}
 					>
-						
-              <img
-                src="https://res.cloudinary.com/djowr4szv/image/upload/v1677386645/logo-no-background_vlt5rd.png"
-                className={styles.logo}
-                alt=""
-              />
-            
-						3D IMP
+						<Link to="/">
+							<img
+								src="https://res.cloudinary.com/djowr4szv/image/upload/v1677386645/logo-no-background_vlt5rd.png"
+								className={styles.logo}
+								alt=""
+							/>
+						</Link>
+						<Link to="/">3D IMP</Link>
 					</Typography>
+
 					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
 						{pages.map((page) => (
+
 							<Button
 								key={page}
 								onClick={handleCloseNavMenu}
 								sx={{ my: 2, color: "white", display: "block" }}
 							>
-								{page}
+								<Link to={`/${page}`}>{page}</Link>
 							</Button>
 						))}
 					</Box>

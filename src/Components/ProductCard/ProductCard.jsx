@@ -11,31 +11,23 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-
-export const ProductCard = ({item,onAdd}) => {
-	let [contador, setContador] = useState(1);
+export const ProductCard = ({ item, onAdd }) => {
 	
-	let {	id,
-		img,
-		title ,
-		description ,
-		stock,
-		price
-		
-		} = item
 
-	const sumarCarrito  = () => {
-		if(contador < stock)
-		{setContador(contador + 1);}
-	};
+	let { id, img, title, description, stock, price } = item;
 
-	const eliminarCarrito = () => {
-		if(contador!==0){setContador(contador - 1)}
-	};
 
-	return <Card id={id} sx={{ maxWidth: 345 }}>
-			<CardMedia component="img" sx={{ height: 140 }} image={img} title="green iguana" />
+
+	return (
+		<Card id={id} sx={{ maxWidth: 345 }}>
+			<CardMedia
+				component="img"
+				sx={{ height: 140 }}
+				image={img}
+				title="green iguana"
+			/>
 			<CardContent>
 				<Typography gutterBottom variant="h5" component="div">
 					{title}
@@ -49,21 +41,21 @@ export const ProductCard = ({item,onAdd}) => {
 			</CardContent>
 			<CardActions>
 				<Stack spacing={2} direction="row">
-				<Button variant="contained"  onClick={eliminarCarrito}>
-						-
-					</Button>
-					<Typography  variant='p' style={{display:'flex',alignItems:'center',fontSize:"2em"}}>{contador}</Typography>
-					<Button variant="contained" onClick={sumarCarrito}>
-						+
-					</Button>
-
-					<Button variant="contained" color="secondary" onClick={()=>{onAdd(contador)}}>
-						Agregar a carrito
-					</Button>
-					
-				
+		
+					<Link to={`/details/${id}`}>
+						<Button
+							direction="row"
+							columns={12}
+							variant="contained"
+							color="primary"
+							
+							
+						>
+							VER DETALLE
+						</Button>
+					</Link>
 				</Stack>
 			</CardActions>
 		</Card>
-	
+	);
 };
