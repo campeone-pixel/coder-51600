@@ -1,10 +1,7 @@
-import {
-  Button,
-  CardContent,
-  CardMedia,
-  Stack,
-  Typography,
-} from "@mui/material";
+
+
+
+
 import { getDoc, collection, doc } from "firebase/firestore";
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";
@@ -13,9 +10,12 @@ import Swal from "sweetalert2";
 import { db } from "../../firebaseConfig";
 
 import { CartContext } from "../Context/CartContext";
+import ItemDetail from "../ItemDetail/ItemDetail";
 
-const Details = () => {
-  const { agregarAlCarrito,cart } = useContext(CartContext);
+
+const ItemDetailContainer = () => {
+  
+  const { agregarAlCarrito, cart } = useContext(CartContext);
   const { id } = useParams();
 
   const [producto, setProducto] = useState({});
@@ -34,19 +34,16 @@ const Details = () => {
     const existeProductoCarrito = cart.some((elemento) => {
       return elemento.id === producto.id;
     });
-  
+
     const productoEnCarrito = cart.filter((elemento) => {
       return elemento.id === producto.id;
     });
-  
+
     if (existeProductoCarrito) {
       setContador(productoEnCarrito[0].cantidad);
     }
-  
   }, [cart, id, producto.id]);
 
-
- 
   const onAdd = (cantidad) => {
     const productoMasCant = { ...producto, cantidad: cantidad };
 
@@ -59,8 +56,6 @@ const Details = () => {
       timer: 1500,
     });
   };
-
-
 
   const sumarCarrito = () => {
     if (contador === producto.stock) {
@@ -91,53 +86,21 @@ const Details = () => {
     }
   };
 
+
+
   return (
     <div>
-      <h1>{producto.title}</h1>
-      <CardMedia
-        component="img"
-        sx={{ height: 140 }}
-        image={producto.img}
-        title="green iguana"
+      <ItemDetail
+      producto = {producto}
+      eliminarCarrito = {eliminarCarrito}
+      sumarCarrito = {sumarCarrito}
+      contador = {contador}
+      onAdd = {onAdd}
       />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {producto.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {producto.description}
-        </Typography>
 
-        <h4> Precio: {producto.price}</h4>
-        <h4> Stock: {producto.stock}</h4>
-      </CardContent>
-
-      <Stack direction="row">
-        <Button variant="contained" onClick={eliminarCarrito}>
-          -
-        </Button>
-        <Typography
-          variant="p"
-          style={{ display: "flex", alignItems: "center", fontSize: "2em" }}
-        >
-          {contador}
-        </Typography>
-        <Button variant="contained" onClick={sumarCarrito}>
-          +
-        </Button>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            onAdd(contador);
-          }}
-        >
-          Agregar a carrito
-        </Button>
-      </Stack>
+      
     </div>
   );
 };
 
-export default Details;
+export default ItemDetailContainer;
