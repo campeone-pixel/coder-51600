@@ -1,106 +1,127 @@
 import {
-	Button,
-	CardContent,
-	CardMedia,
-	Stack,
-	Typography,
+  Button,
+  CardContent,
+  CardMedia,
+  Stack,
+  Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { getDoc, collection, doc } from "firebase/firestore";
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../../productMock";
+import Swal from "sweetalert2";
+import { db } from "../../firebaseConfig";
+
+import { CartContext } from "../Context/CartContext";
 
 const Details = () => {
-	const { id } = useParams();
-	console.log(id);
-	// const [items, setItems] = useState([]);
+  const { agregarAlCarrito } = useContext(CartContext);
+  const { id } = useParams();
 
-	// useEffect(() => {
-	// 	const productList = new Promise((resolve, reject) => {
-	// 		resolve(products);
-	// 	});
+  const [producto, setProducto] = useState({});
 
-	// 	productList
-	// 		.then((resolve) => {
-	// 			setItems(resolve);
+  useEffect(() => {
+    const itemCollection = collection(db, "productos");
+    const ref = doc(itemCollection, id);
+    getDoc(ref).then((res) => {
+      setProducto({
+        ...res.data(),
+        id: res.id,
+      });
+    });
+  }, [id]);
 
-	// 		})
-	// 		.catch((e) => {});
-	// }, []);
+  let [contador, setContador] = useState(1);
 
-	const {
-		id: id_single,
-		img,
-		title,
-		description,
-		stock,
-		price,
-	} = products.find((product) => product.id === Number(id));
+  const onAdd = (cantidad) => {
+    const productoMasCant = { ...producto, cantidad: cantidad };
 
-	let [contador, setContador] = useState(1);
+    agregarAlCarrito(productoMasCant);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "El producto fue agreagado exitosamente",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
-	const onAdd = (cantidad) => {
-		console.log(`se agrego al carrito ${cantidad} elementos`);
-	};
+  const sumarCarrito = () => {
+    if (contador === producto.stock) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No hay mas stock!",
+      });
+      return;
+    }
 
-	const sumarCarrito = () => {
-		if (contador < stock) {
-			setContador(contador + 1);
-		}
-	};
+    if (contador < producto.stock) {
+      setContador(contador + 1);
+    }
+  };
 
-	const eliminarCarrito = () => {
-		if (contador !== 0) {
-			setContador(contador - 1);
-		}
-	};
+  const eliminarCarrito = () => {
+    if (contador === 1) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "No puedes comprar 0!",
+      });
+      return;
+    }
+    if (contador !== 0) {
+      setContador(contador - 1);
+    }
+  };
 
-	return (
-		<div>
-			<h1>{title}</h1>
-			<CardMedia
-				component="img"
-				sx={{ height: 140 }}
-				image={img}
-				title="green iguana"
-			/>
-			<CardContent>
-				<Typography gutterBottom variant="h5" component="div">
-					{title}
-				</Typography>
-				<Typography variant="body2" color="text.secondary">
-					{description}
-				</Typography>
+  return (
+    <div>
+      <h1>{producto.title}</h1>
+      <CardMedia
+        component="img"
+        sx={{ height: 140 }}
+        image={producto.img}
+        title="green iguana"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {producto.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {producto.description}
+        </Typography>
 
-				<h4> Precio: {price}</h4>
-				<h4> Stock: {stock}</h4>
-			</CardContent>
+        <h4> Precio: {producto.price}</h4>
+        <h4> Stock: {producto.stock}</h4>
+      </CardContent>
 
-			<Stack direction="row">
-				<Button variant="contained" onClick={eliminarCarrito}>
-					-
-				</Button>
-				<Typography
-					variant="p"
-					style={{ display: "flex", alignItems: "center", fontSize: "2em" }}
-				>
-					{contador}
-				</Typography>
-				<Button variant="contained" onClick={sumarCarrito}>
-					+
-				</Button>
+      <Stack direction="row">
+        <Button variant="contained" onClick={eliminarCarrito}>
+          -
+        </Button>
+        <Typography
+          variant="p"
+          style={{ display: "flex", alignItems: "center", fontSize: "2em" }}
+        >
+          {contador}
+        </Typography>
+        <Button variant="contained" onClick={sumarCarrito}>
+          +
+        </Button>
 
-				<Button
-					variant="contained"
-					color="secondary"
-					onClick={() => {
-						onAdd(contador);
-					}}
-				>
-					Agregar a carrito
-				</Button>
-			</Stack>
-		</div>
-	);
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            onAdd(contador);
+          }}
+        >
+          Agregar a carrito
+        </Button>
+      </Stack>
+    </div>
+  );
 };
 
 export default Details;

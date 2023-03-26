@@ -1,8 +1,12 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function Dropdown() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -13,18 +17,29 @@ function Dropdown() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const collectionCategorias = collection(db, "categorias");
+    getDocs(collectionCategorias).then((res) => {
+      const categorias = res.docs.map((e) => {
+        return { ...e.data(), id: e.id };
+      });
+      setCategorias(categorias);
+      
+    });
+  }, []);
 
   return (
     <div>
       <Button
         id="basic-button"
-        aria-controls={open ? 'basic-menu' : undefined}
+        aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
+        aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        
-          CATEGORIAS
+        CATEGORIAS
       </Button>
       <Menu
         id="basic-menu"
@@ -32,23 +47,21 @@ function Dropdown() {
         open={open}
         onClose={handleClose}
         MenuListProps={{
-          'aria-labelledby': 'basic-button',
+          "aria-labelledby": "basic-button",
         }}
       >
-        <Link to='/store'>
-          <MenuItem onClick={handleClose}>Todas</MenuItem>
-        </Link>
-        <Link to='/categorias/deportivas'>
-          <MenuItem onClick={handleClose}>Deportivas</MenuItem>
-        </Link>
-        <Link to='/categorias/urbanas'>
-          <MenuItem onClick={handleClose}>Urbanas</MenuItem>
-        </Link>
+        {categorias.map((e) => {
+          return (
+            <Link to={e.path} key={e.id}>
+              <MenuItem onClick={handleClose} >
+                {e.title}
+              </MenuItem>
+            </Link>
+          );
+        })}
       </Menu>
     </div>
   );
 }
 
-
-
-export default Dropdown
+export default Dropdown;
