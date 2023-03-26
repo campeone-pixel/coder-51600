@@ -18,7 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 
 
-const pages = ["about", "store",'deportivas', ];
+const pages = ["about", "store" ];
 const settings = ["Perfil", "Cuenta", "Logout"];
 
 export function Navbar() {
