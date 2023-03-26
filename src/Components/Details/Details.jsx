@@ -15,10 +15,11 @@ import { db } from "../../firebaseConfig";
 import { CartContext } from "../Context/CartContext";
 
 const Details = () => {
-  const { agregarAlCarrito } = useContext(CartContext);
+  const { agregarAlCarrito,cart } = useContext(CartContext);
   const { id } = useParams();
 
   const [producto, setProducto] = useState({});
+  let [contador, setContador] = useState(1);
 
   useEffect(() => {
     const itemCollection = collection(db, "productos");
@@ -29,10 +30,23 @@ const Details = () => {
         id: res.id,
       });
     });
-  }, [id]);
 
-  let [contador, setContador] = useState(1);
+    const existeProductoCarrito = cart.some((elemento) => {
+      return elemento.id === producto.id;
+    });
+  
+    const productoEnCarrito = cart.filter((elemento) => {
+      return elemento.id === producto.id;
+    });
+  
+    if (existeProductoCarrito) {
+      setContador(productoEnCarrito[0].cantidad);
+    }
+  
+  }, [cart, id, producto.id]);
 
+
+ 
   const onAdd = (cantidad) => {
     const productoMasCant = { ...producto, cantidad: cantidad };
 
@@ -45,6 +59,8 @@ const Details = () => {
       timer: 1500,
     });
   };
+
+
 
   const sumarCarrito = () => {
     if (contador === producto.stock) {
