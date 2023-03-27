@@ -6,15 +6,13 @@ import {
   Typography,
 } from "@mui/material";
 
-const ItemDetail = (
-{  producto,
+const ItemDetail = ({
+  producto,
   eliminarCarrito,
   sumarCarrito,
   contador,
-  onAdd}
-) => {
-
-    
+  onAdd,
+}) => {
   return (
     <div>
       <h1>{producto.title}</h1>
