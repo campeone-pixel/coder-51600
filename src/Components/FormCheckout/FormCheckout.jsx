@@ -5,6 +5,8 @@ import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -23,8 +25,6 @@ const SignupSchema = Yup.object().shape({
 });
 
 const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
- 
-
   const [orderID, setOrderID] = useState(null);
 
   const handleSubmit = (values) => {
@@ -33,7 +33,7 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
       cart: cart,
       total: totalCarrito(),
     };
-    console.log(order);
+
     const colRef = collection(db, "orders");
 
     addDoc(colRef, order)
@@ -45,7 +45,7 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
         console.error("Error writing document: ", error);
       });
 
-    cart.map((producto) => {
+    cart.forEach((producto) => {
       let refDoc = doc(db, "productos", producto.id);
       updateDoc(refDoc, { stock: producto.stock - producto.cantidad });
     });
@@ -65,7 +65,53 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
 
   return (
     <div>
-      <h1>Signup</h1>
+      <h1>Su compra:</h1>
+
+      {cart.map((producto) => {
+        return (
+          <Card sx={{ display: "flex" }}>
+            <CardMedia
+              component="img"
+              sx={{ width: 151 }}
+              image={producto.img}
+              alt=""
+            />
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <CardContent sx={{ flex: "1 0 auto" }}>
+                <Typography component="div" variant="h5">
+                  {producto.title}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  color="text.secondary"
+                  component="div"
+                >
+                  Cantidad: {producto.cantidad}
+                </Typography>
+              </CardContent>
+              <Box
+                sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+              ></Box>
+            </Box>
+          </Card>
+        );
+      })}
+
+      <Card sx={{ display: "flex" }}>
+     
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <CardContent sx={{ flex: "1 0 auto" }}>
+            <Typography component="div" variant="h5">
+              Total compra: {totalCarrito()}
+            </Typography>
+          
+          </CardContent>
+          <Box
+            sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}
+          ></Box>
+        </Box>
+      </Card>
+
       <Formik
         initialValues={{
           firstName: "",
