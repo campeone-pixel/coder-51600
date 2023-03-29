@@ -11,22 +11,31 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 
-
-
 import MenuItem from "@mui/material/MenuItem";
-
+import { useNavigate } from "react-router";
+import { useUserAuth } from "../context/UserAuthContext";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const settings = ["Perfil", "Cuenta", "Logout"];
 
 export function Navbar() {
+  const { logOut, user } = useUserAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -145,9 +154,16 @@ export function Navbar() {
           </Box>
 
           <CardWidget />
-          <Box sx={{ flexGrow: 0 }}>
-       
 
+          <div className="p-4 box mt-3 text-center">
+            Hello Welcome <br />
+          </div>
+          <div className="d-grid gap-2">
+            <Button variant="primary" onClick={handleLogout}>
+              Log out
+            </Button>
+          </div>
+          <Box sx={{ flexGrow: 0 }}>
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
