@@ -8,11 +8,7 @@ export const ItemList = ({ items }) => {
   return (
     <div>
       <Box
-        sx={{
-          width: "100%",
-          minHeight: "100vh",
-          backgroundColor: "white",
-        }}
+      
       >
         <Dropdown />
 

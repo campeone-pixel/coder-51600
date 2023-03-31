@@ -4,68 +4,112 @@ import { CartContext } from "../Context/CartContext";
 import FormCheckout from "../FormCheckout/FormCheckout";
 
 
+import Typography from "@mui/material/Typography";
+
+import Card from "@mui/material/Card";
+
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import {  Button, CardActions, Container, Stack } from "@mui/material";
+
 const Cart = () => {
-  const { cart, limpiarCarrito, totalCarrito, eliminarItem } =
+  const { cart, limpiarCarrito, totalCarrito } =
     useContext(CartContext);
 
-  const [quiereComprar, setQuiereComprar] = useState(false)
+  const [quiereComprar, setQuiereComprar] = useState(false);
 
-
-
-  if(quiereComprar){
-    return(
+  if (quiereComprar) {
+    return (
       <div>
-        <FormCheckout cart={cart} totalCarrito = {totalCarrito} limpiarCarrito = {limpiarCarrito}/>
+        <FormCheckout
+          cart={cart}
+          totalCarrito={totalCarrito}
+          limpiarCarrito={limpiarCarrito}
+        />
       </div>
-    )
+    );
   }
 
-  const borrarCart = ()=>{
+  const borrarCart = () => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        limpiarCarrito() ;
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
+        limpiarCarrito();
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
       }
-    })
-  }
-
-
+    });
+  };
 
   return (
-    <div>
+    <Container
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "row",
+        gap: "2em",
+
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+     
+    >
+      <Stack>
       {cart.map((elemento) => {
         return (
-          <div key={elemento.id}>
-            <h1>{elemento.title}</h1>
-            <h2>{elemento.price}</h2>
-            <h3>{elemento.cantidad}</h3>
-            <button onClick={() => eliminarItem(elemento.id)}>Eliminar</button>
-          </div>
+  
+
+          <Card key={elemento.id} sx={{ display: "flex" }}>
+            <CardContent sx={{ flex: 1 }}>
+              <Typography component="h2" variant="h5">
+                {elemento.title}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
+                {elemento.price}
+              </Typography>
+              <Typography variant="subtitle1" paragraph>
+                {elemento.description}
+              </Typography>
+            </CardContent>
+            <CardMedia
+              component="img"
+              sx={{ width: 160, display: { xs: "none", sm: "block" } }}
+              image={elemento.image}
+              alt=""
+            />
+          </Card>
         );
       })}
+      </Stack>
 
-      {totalCarrito() > 0? (
-        <div>
-          <h1>El total del carrito es ${totalCarrito()}</h1>
-          <button onClick={borrarCart}>Limpiar carrito</button>
-          <button onClick={()=>{setQuiereComprar(true)}}>Terminar la compra
-          </button>
-        </div>
-      ): <h1> No tiene productos en el carrito</h1>}
-    </div>
+   
+      {totalCarrito() > 0 ? (
+      <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        El total del carrito es ${totalCarrito()}
+        </Typography>
+      
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={borrarCart}>Borrar Carrito</Button>
+        <Button size="small"  onClick={() => {
+            setQuiereComprar(true);
+          }}>COMPRAR</Button>
+      </CardActions>
+    </Card>
+
+      ) : (
+        <h1> No tiene productos en el carrito</h1>
+      )}
+    </Container>
   );
 };
 
-export default Cart;    
+export default Cart;
