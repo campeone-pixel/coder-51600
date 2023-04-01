@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Button } from "react-bootstrap";
-
 import Avatar from "@mui/material/Avatar";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -17,27 +13,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Alert } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 
 import { useUserAuth } from "../Context/UserAuthContext";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -76,7 +54,7 @@ const Login = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Inicio sesion
             </Typography>
             <Box
               component="form"
@@ -86,12 +64,12 @@ const Login = () => {
             >
               {error && <Alert variant="danger">{error}</Alert>}
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ width: "100%" }}>
                   <TextField
+                    fullWidth
                     required
-                
                     id="email"
-                    label="Email Address"
+                    label="Direccion de Email"
                     name="email"
                     autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
@@ -99,47 +77,28 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    fullWidth
                     required
-                   
                     name="password"
-                    label="Password"
+                    label="Contrasenia"
                     type="password"
                     id="password"
                     autoComplete="new-password"
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid>
               </Grid>
-              <Button
-                type="submit"
-                
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Login
+              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                Iniciar sesion
               </Button>
-              {/* <div>
-          <GoogleButton
-            className="g-btn"
-            type="dark"
-          />
-        </div> */}
+
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link to="/signup">Sign up</Link>
+                  <Link to="/registro">Registrate</Link>
                 </Grid>
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
         </Container>
       </ThemeProvider>
     </>

@@ -7,6 +7,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { useState } from "react";
 import { useEffect } from "react";
+import { Typography } from "@mui/material";
 
 function Dropdown() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -26,7 +27,6 @@ function Dropdown() {
         return { ...e.data(), id: e.id };
       });
       setCategorias(categorias);
-      
     });
   }, []);
 
@@ -39,7 +39,10 @@ function Dropdown() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
+        <Typography variant="h4">
+
         CATEGORIAS
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"
@@ -53,8 +56,10 @@ function Dropdown() {
         {categorias.map((e) => {
           return (
             <Link to={e.path} key={e.id}>
-              <MenuItem onClick={handleClose} >
-                {e.title}
+              <MenuItem onClick={handleClose}>
+                <Typography variant="h5" >
+                  {e.title}
+                </Typography>
               </MenuItem>
             </Link>
           );

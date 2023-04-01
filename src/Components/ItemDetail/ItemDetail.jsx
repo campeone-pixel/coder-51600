@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import { useUserAuth } from "../Context/UserAuthContext";
+import ItemCount from "../ItemCount/ItemCount";
 import Login from "../Login/Login";
 
 const ItemDetail = ({
@@ -65,28 +66,29 @@ const ItemDetail = ({
             <h4> Stock: {producto.stock}</h4>
           </CardContent>
 
-          <Stack direction="row">
-            <Button variant="contained" onClick={eliminarCarrito}>
-              -
-            </Button>
-            <Typography
-              variant="p"
-              style={{ display: "flex", alignItems: "center", fontSize: "2em" }}
-            >
-              {contador}
-            </Typography>
-            <Button variant="contained" onClick={sumarCarrito}>
-              +
-            </Button>
+          {producto.stock === 0 ? (
+            <Stack direction="row" gap={"1em"}>
+              <Typography color={"red"} >
+                SIN STOCK
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack direction="row" gap={"1em"}>
+              <ItemCount
+                eliminarCarrito={eliminarCarrito}
+                sumarCarrito={sumarCarrito}
+                contador={contador}
+              />
 
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => estaLogeado(contador)}
-            >
-              Agregar a carrito
-            </Button>
-          </Stack>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => estaLogeado(contador)}
+              >
+                Agregar a carrito
+              </Button>
+            </Stack>
+          )}
         </Stack>
       )}
     </Container>

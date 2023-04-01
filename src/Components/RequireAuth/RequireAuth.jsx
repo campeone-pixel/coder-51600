@@ -4,12 +4,12 @@ import { useUserAuth } from "../Context/UserAuthContext";
 const RequireAuth = () => {
   const { showUser } = useUserAuth();
   const location = useLocation();
-  const user = showUser()
- 
+  const user = showUser();
+
   return user.currentUser ? (
     <Outlet />
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace />
+    <Navigate to="/inicio" state={{ from: location }} replace />
   );
 };
 

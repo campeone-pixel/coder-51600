@@ -1,7 +1,4 @@
 
-
-
-
 import { getDoc, collection, doc } from "firebase/firestore";
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";

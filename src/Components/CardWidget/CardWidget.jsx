@@ -9,7 +9,7 @@ export const CardWidget = () => {
 
   return (
     <div>
-      <Link to="/cart">
+      <Link to="/carrito">
         <Badge badgeContent={cantItemsCarrito()} color="secondary">
           <BsCart3 color="red" size="30px" />
         </Badge>

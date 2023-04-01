@@ -74,10 +74,9 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
     validationSchema: SignupSchema,
     onSubmit: (values) => {
       const order = {
-        
-        user: {mail:showUser().currentUser.email,...values},
-        cart: {total: totalCarrito(),...cart}
-        
+        user: { mail: showUser().currentUser.email, ...values },
+        cart: cart,
+        total: totalCarrito(),
       };
 
       const colRef = collection(db, "orders");

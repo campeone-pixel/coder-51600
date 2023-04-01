@@ -19,10 +19,11 @@ function App() {
   return (
     <BrowserRouter>
       <Box>
-        <Grid container>
+        <Grid container
+        sx={{display:"flex",flexDirection:"column", minHeight:"100vh"}}>
           <UserAuthContextProvider>
             <CartContextProvider>
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 <Navbar />
               </Grid>
 
@@ -33,17 +34,18 @@ function App() {
                   display: "flex",
                   justifyContent: "center",
                   alignContent: "center",
-                  width: "100%",
-                  minHeight: "85vh",
-                  backgroundColor: "white",
+                  minHeight:"90vh",
+                  flexGrow: "1",
+                  padding:"2em",
+                  backgroundColor:"#EFF9F0"
                 }}
               >
                 <Routes>
                   <Route element={<RequireAuth />}>
-                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/carrito" element={<Cart />} />
                   </Route>
                   <Route
-                    path="/details/:id"
+                    path="/detalles/:id"
                     element={<ItemDetailContainer />}
                   />
                   <Route path="/" element={<ItemListContainer />} />
@@ -51,14 +53,14 @@ function App() {
                     path="/categorias/:categoria"
                     element={<ItemListContainer />}
                   />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/inicio" element={<Login />} />
+                  <Route path="/registro" element={<Signup />} />
 
                   <Route path="*" element={<h2>Not found</h2>} />
                 </Routes>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{minHeight:"10vh"}}>
                 <Footer />
               </Grid>
             </CartContextProvider>

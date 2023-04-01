@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 
-
 export const CartContext = createContext();
 
 const CartContextProvider = ({ children }) => {
@@ -22,15 +21,28 @@ const CartContextProvider = ({ children }) => {
             cantidad: producto.cantidad,
           };
         } else {
-          console.log(elemento);
           return elemento;
         }
       });
-
       setCart(nuevoCarrito);
     } else {
       setCart([...cart, producto]);
     }
+  };
+
+  const actualizarCantItem = (id, cantidad) => {
+    const nuevoCart = cart.map((elemento) => {
+      if (elemento.id === id) {
+        return {
+          ...elemento,
+          cantidad: cantidad+1,
+        };
+      } else {
+        return elemento;
+      }
+    });
+
+    setCart(nuevoCart);
   };
 
   // eliminar
@@ -69,6 +81,7 @@ const CartContextProvider = ({ children }) => {
     cantItemsCarrito,
     totalCarrito,
     eliminarItem,
+    actualizarCantItem,
   };
 
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;

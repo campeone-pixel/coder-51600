@@ -7,9 +7,7 @@ import SyncLoader from "react-spinners/SyncLoader";
 export const ItemList = ({ items }) => {
   return (
     <div>
-      <Box
-      
-      >
+      <Box>
         <Dropdown />
 
         {items.length > 0 ? (

@@ -20,7 +20,7 @@ import { useEffect } from "react";
 
 import { useUserAuth } from "../Context/UserAuthContext";
 
-const pages = ["Store"];
+const pages = ["Tienda"];
 export function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -62,7 +62,7 @@ export function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{backgroundColor:"#50666E"}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -76,9 +76,10 @@ export function Navbar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+            
               textDecoration: "none",
               alignItems: "center",
+              
             }}
           >
             <Link to="/">
@@ -100,7 +101,7 @@ export function Navbar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+             
             >
               <MenuIcon />
             </IconButton>
@@ -124,8 +125,8 @@ export function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link to="/">{page}</Link>
+                  <Typography textAlign="center" sx={{color: 'white'}}>
+                    <Link  to="/">{page}</Link>
                   </Typography>
                 </MenuItem>
               ))}
@@ -147,7 +148,7 @@ export function Navbar() {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              
               textDecoration: "none",
               alignItems: "center",
             }}
@@ -168,8 +169,8 @@ export function Navbar() {
             }}
           >
             <MenuItem onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">
-                <Link to="/">Store</Link>
+              <Typography textAlign="center" variant="h3" >
+                <Link to="/" style={{color: 'white',textDecoration: "none"}}>Tienda</Link>
               </Typography>
             </MenuItem>
           </Box>
@@ -203,7 +204,6 @@ export function Navbar() {
             >
               {auth ? (
                 <Box>
-                
                   <MenuItem>
                     <Link onClick={handleLogout}>Cerrar sesion</Link>
                   </MenuItem>
@@ -211,10 +211,10 @@ export function Navbar() {
               ) : (
                 <Box>
                   <MenuItem>
-                    <Link to="/signup">Registrate</Link>
+                    <Link to="/registro">Registrate</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="/login">Iniciar sesion</Link>
+                    <Link to="/inicio">Iniciar sesion</Link>
                   </MenuItem>
                 </Box>
               )}
