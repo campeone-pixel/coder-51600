@@ -27,9 +27,9 @@ Ecommerce en react realizado en el curso de Coderhouse.
 
 
 
-## Gif del Ecommerce
+## Video del Ecommerce
 
-
+[Link al video](https://youtu.be/iAg6AnEpuuw)
 
 
 ## Estructura del proyecto
