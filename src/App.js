@@ -13,9 +13,7 @@ import ItemListContainer from "./Components/ItemListContainer/ItemListContainer"
 import ItemDetailContainer from "./Components/ItemDetailContainer/ItemDetailContainer";
 import Login from "./Components/Login/Login";
 import Signup from "./Components/SignUp/SignUp";
-import Logout from "./Components/Logout/Logout"     ;      
-
-     
+import RequireAuth from "./Components/RequireAuth/RequireAuth";
 
 function App() {
   return (
@@ -41,7 +39,9 @@ function App() {
                 }}
               >
                 <Routes>
-                  <Route path="/cart" element={<Cart />} />
+                  <Route element={<RequireAuth />}>
+                    <Route path="/cart" element={<Cart />} />
+                  </Route>
                   <Route
                     path="/details/:id"
                     element={<ItemDetailContainer />}
@@ -53,8 +53,6 @@ function App() {
                   />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
-                  <Route path="/logout" element={<Logout />} />
-                  
 
                   <Route path="*" element={<h2>Not found</h2>} />
                 </Routes>

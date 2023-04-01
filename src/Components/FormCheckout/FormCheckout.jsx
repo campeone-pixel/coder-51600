@@ -1,6 +1,6 @@
-import {  useFormik } from "formik";
+import { useFormik } from "formik";
 
-import * as yup from 'yup';
+import * as yup from "yup";
 import { addDoc, collection, doc, updateDoc } from "@firebase/firestore";
 import { db } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
@@ -10,7 +10,9 @@ import {
   Card,
   CardContent,
   CardMedia,
+  Container,
   Grid,
+  Paper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,33 +22,36 @@ import { useUserAuth } from "../Context/UserAuthContext";
 
 const SignupSchema = yup.object({
   firstName: yup
-    .string('Enter your email')
-  
-    .required('Email is required'),
-    lastName: yup
-    .string('Enter your password')
-    
-    .required('Password is required'),
-    phone: yup
-    .string('Enter your password')
-   
-    .required('Password is required'),
-    cardName: yup
-    .string('Enter your password')
-   
-    .required('Password is required'),
-    cardNumber: yup
-    .number('Enter your password')
-    
-    .required('Password is required'),
-    cardExp: yup
-    .number('Enter your password')
-   
-    .required('Password is required'),
-    cvv: yup
-    .number('Enter your password')
-    
-    .required('Password is required'),
+    .string("Ingrese su nombre")
+    .min(5, "Minimo de 16 numeros")
+    .required("Requerido"),
+  lastName: yup
+    .string("Ingrese su apellido")
+    .min(5, "Minimo de 16 numeros")
+    .required("Password is required"),
+  phone: yup
+    .string("Ingrese su telefono")
+    .min(9, "Minimo de 16 numeros")
+    .required("Requerido"),
+  cardName: yup
+    .string("Ingrese el nombre de duenio de la tarjeta")
+    .min(5, "Minimo de 10 numeros")
+    .required("Requerido"),
+  cardNumber: yup
+    .number("Ingrese el numero de la tarjeta")
+    .min(16, "Minimo de 16 numeros")
+
+    .required("Requerido"),
+  cardExp: yup
+    .number("Ingrese vencimiento")
+    .min(4, "Minimo 4")
+
+    .required("Requerido"),
+  cvv: yup
+    .number("Ingrese el cvv")
+    .min(3, "Minimo de 3 numeros")
+
+    .required("Requerido"),
 });
 
 const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
@@ -68,13 +73,11 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
 
     validationSchema: SignupSchema,
     onSubmit: (values) => {
-      
-     
       const order = {
-        mail:showUser().currentUser.email,
-        user: values,
-        cart: cart,
-        total: totalCarrito(),
+        
+        user: {mail:showUser().currentUser.email,...values},
+        cart: {total: totalCarrito(),...cart}
+        
       };
 
       const colRef = collection(db, "orders");
@@ -97,13 +100,29 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
 
   if (orderID) {
     return (
-      <div>
-        <h1>La compra fue realizada con exito</h1>
-        <h3>El numero de ID de su compra es: {orderID}</h3>
-        <Link to="/">
-          <button>Volver al Ecommerce</button>
-        </Link>
-      </div>
+      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+        <Paper
+          variant="outlined"
+          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+        >
+          <Typography component="h1" variant="h4" align="center">
+            Pago realizado
+          </Typography>
+
+          <Typography variant="h5" gutterBottom>
+            Gracias por tu compra.
+          </Typography>
+          <Typography variant="subtitle1">
+            El numero de tu orden de compra es # {orderID}. Te enviamos un mail
+            con el detalle de la compra, y te avisaremos cuando tu compra fue
+            enviada.
+          </Typography>
+
+          <Link to="/">
+            <Button>Volver a la Tienda</Button>
+          </Link>
+        </Paper>
+      </Container>
     );
   }
 
@@ -112,6 +131,7 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
       container
       sx={{
         padding: "4em",
+        gap: "1em",
       }}
     >
       <Grid item xs={12}>
@@ -119,7 +139,11 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
           Articulos
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        sx={{ display: "flex", flexDirection: "column", gap: "2em" }}
+      >
         {cart.map((producto) => {
           return (
             <Card key={producto.id} sx={{ display: "flex" }}>
@@ -166,7 +190,7 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
           </Box>
         </Card>
       </Grid>
-     
+
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -183,17 +207,23 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               variant="standard"
               value={formik.values.firstName}
               onChange={formik.handleChange}
+              error={
+                formik.touched.firstName && Boolean(formik.errors.firstName)
+              }
+              helperText={formik.touched.firstName && formik.errors.firstName}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-            fullWidth
+              fullWidth
               name="lastName"
               label="Apellido"
               placeholder="Apellido"
               variant="standard"
               value={formik.values.lastName}
               onChange={formik.handleChange}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+              helperText={formik.touched.lastName && formik.errors.lastName}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -205,6 +235,8 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               variant="standard"
               value={formik.values.phone}
               onChange={formik.handleChange}
+              error={formik.touched.phone && Boolean(formik.errors.phone)}
+              helperText={formik.touched.phone && formik.errors.phone}
             />
           </Grid>
 
@@ -220,11 +252,13 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               name="cardName"
               id="cardName"
               fullWidth
-              label="Name on card"
+              label="Nombre en la tarjeta"
               autoComplete="cc-name"
               variant="standard"
               value={formik.values.cardName}
               onChange={formik.handleChange}
+              error={formik.touched.cardName && Boolean(formik.errors.cardName)}
+              helperText={formik.touched.cardName && formik.errors.cardName}
             />
           </Grid>
 
@@ -234,11 +268,15 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               name="cardNumber"
               id="cardNumber"
               fullWidth
-              label="Card number"
+              label="Numero de la tarjeta"
               autoComplete="cc-number"
               variant="standard"
               value={formik.values.cardNumber}
               onChange={formik.handleChange}
+              error={
+                formik.touched.cardNumber && Boolean(formik.errors.cardNumber)
+              }
+              helperText={formik.touched.cardNumber && formik.errors.cardNumber}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -247,11 +285,13 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               name="cardExp"
               id="expDate"
               fullWidth
-              label="Expiry date"
+              label="Fecha de vencimiento"
               autoComplete="cc-exp"
               variant="standard"
               value={formik.values.cardExp}
               onChange={formik.handleChange}
+              error={formik.touched.cardExp && Boolean(formik.errors.cardExp)}
+              helperText={formik.touched.cardExp && formik.errors.cardExp}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -261,11 +301,12 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
               id="cvv"
               label="CVV"
               fullWidth
-              helperText="Last three digits on signature strip"
               autoComplete="cc-csc"
               variant="standard"
               value={formik.values.cvv}
               onChange={formik.handleChange}
+              error={formik.touched.cvv && Boolean(formik.errors.cvv)}
+              helperText={formik.touched.cvv && formik.errors.cvv}
             />
           </Grid>
           <Grid item xs={12}>
@@ -273,7 +314,6 @@ const FormCheckout = ({ cart, totalCarrito, limpiarCarrito }) => {
           </Grid>
         </Grid>
       </form>
-      
     </Grid>
   );
 };

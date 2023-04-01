@@ -11,29 +11,54 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 
-
-
 import MenuItem from "@mui/material/MenuItem";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { AccountCircle } from "@mui/icons-material";
+import { useEffect } from "react";
 
-const settings = ["Perfil", "Cuenta", "Logout"];
+import { useUserAuth } from "../Context/UserAuthContext";
 
+const pages = ["Store"];
 export function Navbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+
+  const [auth, setAuth] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const { showUser } = useUserAuth();
+  const { logOut } = useUserAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    showUser().currentUser !== null && setAuth(true);
+  }, [auth, showUser]);
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      setAuth(false);
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -63,7 +88,6 @@ export function Navbar() {
                 alt=""
               />
             </Link>
-            <Link to="/">IMPRESIONES 3D</Link>
           </Typography>
 
           {/* ---------------------------------------------------------------------------- */}
@@ -98,11 +122,13 @@ export function Navbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link to="/">Store</Link>
-                </Typography>
-              </MenuItem>
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">
+                    <Link to="/">{page}</Link>
+                  </Typography>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
 
@@ -133,10 +159,14 @@ export function Navbar() {
                 alt=""
               />
             </Link>
-            <Link to="/">3D IMP</Link>
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex", justifyContent: "center" },
+            }}
+          >
             <MenuItem onClick={handleCloseNavMenu}>
               <Typography textAlign="center">
                 <Link to="/">Store</Link>
@@ -145,13 +175,20 @@ export function Navbar() {
           </Box>
 
           <CardWidget />
-          <Box sx={{ flexGrow: 0 }}>
-       
-
+          <div>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
             <Menu
-              sx={{ mt: "45px" }}
               id="menu-appbar"
-              anchorEl={anchorElUser}
+              anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: "top",
                 horizontal: "right",
@@ -161,16 +198,29 @@ export function Navbar() {
                 vertical: "top",
                 horizontal: "right",
               }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {auth ? (
+                <Box>
+                
+                  <MenuItem>
+                    <Link onClick={handleLogout}>Cerrar sesion</Link>
+                  </MenuItem>
+                </Box>
+              ) : (
+                <Box>
+                  <MenuItem>
+                    <Link to="/signup">Registrate</Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link to="/login">Iniciar sesion</Link>
+                  </MenuItem>
+                </Box>
+              )}
             </Menu>
-          </Box>
+          </div>
+          <Box sx={{ flexGrow: 0 }}></Box>
         </Toolbar>
       </Container>
     </AppBar>

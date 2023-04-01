@@ -54,13 +54,14 @@ const Cart = () => {
         display: "flex",
         flexDirection: "row",
         gap: "2em",
+        padding:"2em",
 
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-start",
       }}
      
     >
-      <Stack>
+      <Stack sx={{gap:"1em"}}>
       {cart.map((elemento) => {
         return (
   
@@ -78,11 +79,11 @@ const Cart = () => {
               </Typography>
             </CardContent>
             <CardMedia
-              component="img"
-              sx={{ width: 160, display: { xs: "none", sm: "block" } }}
-              image={elemento.image}
-              alt=""
-            />
+                component="img"
+                sx={{ width: 151 }}
+                image={elemento.img}
+                alt=""
+              />
           </Card>
         );
       })}
@@ -90,7 +91,7 @@ const Cart = () => {
 
    
       {totalCarrito() > 0 ? (
-      <Card sx={{ minWidth: 275 }}>
+      <Card sx={{ minWidth: 275,height:"110px" }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
         El total del carrito es ${totalCarrito()}
